@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <bits/stdc++.h>
-#include <unordered_map>
 
 #define MOD 1'000'000'007
 #define ll long long
@@ -13,19 +12,21 @@ ofstream fout("seqstr.out");
 string A;
 string B;
 
-int c1check(int sb, int fb){
-    int Bpoint = sb - 1;
+set<string> shit;
+
+int c1check(int sb){
+    string s;
+    int Bpoint = sb;
     for(int i = 0; i < A.size(); i++){
         int available = A[i];
         if(available == B[Bpoint]){
+            s.push_back(B[Bpoint]);
+            shit.insert(s);
             Bpoint++;
-        }
-        if(Bpoint > fb - 1){
-            return 1;
         }
     }
 
-    return 0;
+    return Bpoint-1;
 
 }
 
@@ -46,29 +47,17 @@ int main(){
 
     int C; fin >> C;
 
-    int l = 1; int r = 1;
-
     ll ans = 0;
 
-    while(l <= m){
-        while(
-            c1check(l, r + 1) && r < m
-        ){
-            r++;
-        }
+    for(int i = 0; i < B.size(); i++){
+        int e = c1check(i);
 
-        if(c1check(l, r)){
-            ans += r - l + 1;
-            ans %= MOD;
-            cout << l << ' ' << r << '\n';
-        }
-
-        l++;
-        r = max(l, r);
-
+        ans += e - i + 1;
+        cout << i << ' ' << e << '\n';
     }
     
-    fout << ans << '\n';
+    //fout << ans << '\n';
+    fout << shit.size() << '\n';
 
     return 0;
 }
